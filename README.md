@@ -1,43 +1,58 @@
-# Hyperparameter-tuning-
-Hyperparameter tuning for a sequence prediction model using Keras Tuner
+# README: LSTM Model for Sequence-Based Prediction
 
-"""
-README
+## Project Overview
+This project involves building a deep learning model using LSTM (Long Short-Term Memory) networks for sequence-based predictions. The model is optimized using Keras Tuner's RandomSearch to fine-tune hyperparameters for better performance. The primary objective is to predict target values from sequence data provided in `train.csv` and `test.csv`.
 
-This script performs hyperparameter tuning for a sequence prediction model using Keras Tuner.
+## Dependencies
+Ensure the following dependencies are installed before running the script:
 
-1. Dependencies:
-   - pandas
-   - numpy
-   - scikit-learn
-   - keras
-   - kerastuner
+```bash
+pip install pandas numpy keras tensorflow scikit-learn keras-tuner
+```
 
-2. Data:
-   - Make sure the training and test data are in CSV format.
-   - Expected columns: 'sequence', 'target', 'id'.
+## Data Description
+The project utilizes two datasets:
+- **train.csv**: Contains labeled sequence data used for training the model.
+- **test.csv**: Contains unlabeled sequence data for prediction.
 
-3. Setup:
-   - Install the required dependencies using pip:
-     ```
-     pip install pandas numpy scikit-learn keras kerastuner
-     ```
+### Assumed Columns in the Data:
+- `sequence`: The main feature containing string sequences.
+- `target`: The target variable for training.
+- `id`: Unique identifier for test data predictions.
 
-4. Usage:
-   - Place the 'train.csv' and 'test.csv' files in the same directory as this script.
-   - Ensure the data files have the required columns: 'sequence', 'target', 'id'.
-   - Run the script.
+## Workflow
+1. **Data Preprocessing**:
+   - Tokenize the character-based sequences.
+   - Convert sequences into numerical format.
+   - Pad sequences to a uniform length.
+   - Normalize the data using MinMaxScaler.
+   - Reshape the data to fit the LSTM model input requirements.
 
-5. Output:
-   - The script will output predictions in a file named 'predictions.csv' in the same directory.
+2. **Model Building & Hyperparameter Tuning**:
+   - Use Bidirectional LSTM layers with dropout and L2 regularization.
+   - Apply Keras Tuner's `RandomSearch` for hyperparameter tuning.
+   - Optimize parameters such as LSTM units, dropout rates, and learning rate.
 
-6. Hyperparameter Tuning:
-   - Hyperparameters such as LSTM units, dropout rates, and learning rate are tuned.
-   - The script uses RandomSearch to find the best hyperparameters.
-   - Hyperparameters are saved in 'keras_tuner_results' directory.
+3. **Model Training & Validation**:
+   - Train the model using `adam` optimizer and `mse` loss function.
+   - Use early stopping and learning rate reduction techniques.
+   - Perform validation split (80-20) to monitor performance.
 
-7. Note:
-   - This script assumes the sequences are the main features and performs tokenization and padding.
-   - The target column should contain the values to be predicted.
-   - Adjust the hyperparameter search space and other settings as needed.
-   - Ensure the environment has sufficient resources for hyperparameter tuning.
+4. **Prediction & Output**:
+   - The best-tuned model is used to predict target values for the test set.
+   - Predictions are stored in `predictions.csv` with columns `id` and `target`.
+
+## Results Summary
+- The tuning process optimized the validation loss to **18.6395**.
+- Total training and tuning time: **~2 hours 42 minutes**.
+- Final model performance can be improved further with additional feature engineering and more tuning trials.
+
+## How to Run the Script
+1. Place `train.csv` and `test.csv` in the same directory as the script.
+2. Run the script using:
+   ```bash
+   python script_name.py
+   ```
+3. The output predictions will be saved in `predictions.csv`.
+
+
